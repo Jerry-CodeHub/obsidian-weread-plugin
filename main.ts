@@ -1,4 +1,4 @@
-import { Menu, Notice, Platform, Plugin, WorkspaceLeaf } from 'obsidian';
+import { addIcon, Menu, Notice, Platform, Plugin, WorkspaceLeaf } from 'obsidian';
 import FileManager from './src/fileManager';
 import SyncNotebooks from './src/syncNotebooks';
 import ApiManager from './src/api';
@@ -14,11 +14,17 @@ export default class WereadPlugin extends Plugin {
 		console.log('load weread plugin');
 		settingsStore.initialise(this);
 
+		// 注册自定义 SVG 图标
+		addIcon(
+			'weread-book-icon',
+			`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>`
+		);
+
 		const fileManager = new FileManager(this.app.vault, this.app.metadataCache);
 		const apiManager = new ApiManager();
 		this.syncNotebooks = new SyncNotebooks(fileManager, apiManager);
 
-		const ribbonEl = this.addRibbonIcon('book-open', '同步微信读书笔记', (event) => {
+		const ribbonEl = this.addRibbonIcon('weread-book-icon', '同步微信读书笔记', (event) => {
 			if (event.button === 0) {
 				this.startSync();
 			}
